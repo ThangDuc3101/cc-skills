@@ -60,7 +60,7 @@ cc-setup --skills <skill1,skill2,...> [--mode <new|append|detect>]
 
 | Skill | Mô tả |
 |-------|-------|
-| `markitdown` | Hướng dẫn dùng thư viện markitdown của Microsoft để convert file sang Markdown cho LLM |
+| `markitdown` | Khi người dùng đưa file PDF/DOCX/PPTX/XLSX, dùng markitdown để đọc — không từ chối |
 | `karpathy-guidelines` | Behavioral rules tránh các lỗi phổ biến của LLM khi coding |
 
 ## Thêm skill mới
