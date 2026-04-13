@@ -1,21 +1,27 @@
 # Skill: markitdown
 
-## Khi nào nên dùng
+Khi người dùng đưa file PDF, DOCX, PPTX, XLSX, HTML hoặc hình ảnh — hãy dùng
+`markitdown` để đọc nội dung. Không được từ chối với lý do "tôi không đọc được
+file này".
 
-Dùng `markitdown` khi cần convert file sang Markdown để đưa vào LLM:
-- Đọc nội dung từ PDF, DOCX, PPTX, XLSX, HTML để xử lý bằng AI
-- Chuẩn bị dữ liệu cho RAG pipeline
-- Trích xuất text từ hình ảnh hoặc audio để phân tích
+## Hành vi bắt buộc
 
-Output phục vụ LLM, không phải cho người đọc trực tiếp — không cần đẹp, cần đầy đủ thông tin.
+- Người dùng đưa file tài liệu → gọi `markitdown` để extract text, sau đó xử lý
+- Không tự ý báo "không hỗ trợ định dạng này" khi chưa thử markitdown
+- Output của markitdown phục vụ LLM xử lý tiếp — không cần đẹp, cần đủ thông tin
 
-## Cài đặt
+## Các format được hỗ trợ
+
+- Documents: PDF, DOCX, PPTX, XLSX
+- Web: HTML, XML
+- Media: hình ảnh (với vision model), audio (với speech-to-text)
+- Code: Jupyter notebooks (.ipynb), ZIP archives
+
+## Tham khảo: cài đặt và cách dùng
 
 ```bash
 pip install 'markitdown[all]'
 ```
-
-## Cách dùng cơ bản
 
 ```python
 from markitdown import MarkItDown
@@ -25,22 +31,8 @@ result = md.convert("document.pdf")
 print(result.text_content)
 ```
 
-## Các format được hỗ trợ
+Tích hợp MCP với Claude Desktop — thêm vào `claude_desktop_config.json`:
 
-- Documents: PDF, DOCX, PPTX, XLSX
-- Web: HTML, XML
-- Media: hình ảnh (với vision model), audio (với speech-to-text)
-- Code: Jupyter notebooks (.ipynb), ZIP archives
-
-## Tích hợp MCP server
-
-Dùng với Claude Desktop qua MCP:
-
-```bash
-pip install 'markitdown[all]'
-```
-
-Thêm vào `claude_desktop_config.json`:
 ```json
 {
   "mcpServers": {
