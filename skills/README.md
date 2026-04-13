@@ -13,14 +13,14 @@ skills/
 ## Cấu trúc SKILL.md chuẩn
 
 ```markdown
-# Skill: ten-skill
-
 ## Mục đích / Khi nào dùng
 [Mô tả ngắn]
 
 ## Nội dung chính
 [Hướng dẫn, rules, ví dụ...]
 ```
+
+> **Lưu ý:** Không thêm `# Skill: ten-skill` ở đầu file — script inject đã tự thêm heading `## Skill: ten-skill` khi build.
 
 ## Đặt tên thư mục
 
