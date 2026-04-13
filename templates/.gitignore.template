@@ -1,0 +1,15 @@
+# CC-Skills generated .gitignore template
+
+# Backup files từ cc-skills (không nên commit)
+CLAUDE.md.bak
+
+# Bỏ comment dòng dưới nếu không muốn commit CLAUDE.md vào repo project
+# CLAUDE.md
+
+# Các file phổ biến khác
+.env
+.env.local
+*.log
+__pycache__/
+node_modules/
+.DS_Store

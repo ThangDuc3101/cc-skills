@@ -1,0 +1,12 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(chmod +x /c/Users/MAY3/Downloads/myself/my_cc_skills/setup.sh /c/Users/MAY3/Downloads/myself/my_cc_skills/bootstrap.sh /c/Users/MAY3/Downloads/myself/my_cc_skills/scripts/*.sh)",
+      "Bash(git init:*)",
+      "Bash(git add:*)",
+      "Bash(git commit:*)",
+      "Bash(git branch:*)",
+      "Bash(git remote:*)"
+    ]
+  }
+}

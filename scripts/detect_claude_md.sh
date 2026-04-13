@@ -1,0 +1,22 @@
+#!/usr/bin/env bash
+# detect_claude_md.sh — Kiểm tra trạng thái CLAUDE.md trong thư mục hiện tại
+#
+# Exit codes:
+#   0 — không có file CLAUDE.md
+#   1 — có file, chưa có section CC-SKILLS
+#   2 — có file, đã có section CC-SKILLS
+
+TARGET="${1:-CLAUDE.md}"
+
+if [ ! -f "$TARGET" ]; then
+    echo "ℹ️  Không tìm thấy $TARGET"
+    exit 0
+fi
+
+if grep -q "# ── CC-SKILLS BEGIN" "$TARGET" 2>/dev/null; then
+    echo "ℹ️  $TARGET đã có section CC-SKILLS"
+    exit 2
+else
+    echo "ℹ️  $TARGET tồn tại nhưng chưa có section CC-SKILLS"
+    exit 1
+fi
