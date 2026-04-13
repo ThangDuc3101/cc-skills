@@ -40,9 +40,13 @@ function Check-Deps {
 }
 
 function Detect-ClaudeMd($targetFile) {
-    if (-not (Test-Path $targetFile)) { return 0 }
+    # Return codes (Unix convention: 0 = success/found):
+    #   0 — có file, đã có section CC-SKILLS
+    #   1 — có file, chưa có section CC-SKILLS
+    #   2 — không có file CLAUDE.md
+    if (-not (Test-Path $targetFile)) { return 2 }
     $content = Get-Content $targetFile -Raw -ErrorAction SilentlyContinue
-    if ($content -match [regex]::Escape("# ── CC-SKILLS BEGIN")) { return 2 }
+    if ($content -match [regex]::Escape("# ── CC-SKILLS BEGIN")) { return 0 }
     return 1
 }
 
@@ -167,9 +171,9 @@ Write-Host ""
 if ($mode -eq "detect") {
     $detectCode = Detect-ClaudeMd $target
     switch ($detectCode) {
-        0 { $mode = "new" }
+        0 { $mode = "update" }
         1 { $mode = "append" }
-        2 { $mode = "update" }
+        2 { $mode = "new" }
     }
 }
 

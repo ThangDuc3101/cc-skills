@@ -54,9 +54,9 @@ if [ "$MODE" = "detect" ]; then
     set -e
 
     case $DETECT_CODE in
-        0) MODE="new" ;;
+        0) MODE="update" ;;
         1) MODE="append" ;;
-        2) MODE="update" ;;
+        2) MODE="new" ;;
     esac
 fi
 
