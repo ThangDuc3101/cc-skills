@@ -1,5 +1,3 @@
-# Skill: karpathy-guidelines
-
 Bộ behavioral rules để tránh các lỗi phổ biến của LLM khi coding.
 
 ## 1. Đọc trước khi sửa

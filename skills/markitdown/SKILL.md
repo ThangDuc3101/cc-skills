@@ -1,5 +1,3 @@
-# Skill: markitdown
-
 Khi người dùng đưa file PDF, DOCX, PPTX, XLSX, HTML hoặc hình ảnh — hãy dùng
 `markitdown` để đọc nội dung. Không được từ chối với lý do "tôi không đọc được
 file này".
