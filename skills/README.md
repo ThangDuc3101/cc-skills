@@ -62,3 +62,9 @@ Thêm skill `vietnamese-docs`:
 |-------|-------|---------|
 | `markitdown` | Convert file sang Markdown cho LLM | `markitdown` |
 | `karpathy-guidelines` | Behavioral rules tránh lỗi LLM khi coding | `Minimum code` |
+| `px4-codebase-map` | Generate và query codebase map cho PX4-Autopilot | `px4_map.json` |
+| `px4-dev` | PX4 coding conventions: uORB, logging, params, module structure | `task_spawn` |
+| `px4-sitl` | SITL workflow với Gazebo Classic, test trước khi flash Pixhawk 6X | `gazebo_iris` |
+| `mavsdk-python` | MAVSDK Python: connection, error handling, mission, async | `system_address` |
+| `jetson-companion` | Jetson Orin Nano: SSH, serial port, venv, systemd service | `ttyTHS` |
+| `px4-workflow` | Orchestration flow: plan → confirm → code+test song song → SITL → hardware | `checkpoint` |

@@ -13,6 +13,12 @@ FAIL=0
 declare -A SKILL_KEYWORDS=(
     ["markitdown"]="markitdown"
     ["karpathy-guidelines"]="Minimum code"
+    ["px4-codebase-map"]="px4_map.json"
+    ["px4-dev"]="task_spawn"
+    ["px4-sitl"]="gazebo_iris"
+    ["mavsdk-python"]="system_address"
+    ["jetson-companion"]="ttyTHS"
+    ["px4-workflow"]="checkpoint"
 )
 
 # Parse arguments
