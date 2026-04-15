@@ -51,17 +51,27 @@ add_alias() {
     fi
 }
 
-if [ -f "$HOME/.zshrc" ]; then
-    add_alias "$HOME/.zshrc"
-elif [ -f "$HOME/.bashrc" ]; then
-    add_alias "$HOME/.bashrc"
-elif [ -f "$HOME/.bash_profile" ]; then
-    add_alias "$HOME/.bash_profile"
-else
-    echo "⚠️  Không tìm thấy .zshrc / .bashrc / .bash_profile"
-    echo "   Thêm thủ công vào shell config của bạn:"
-    echo '   alias cc-setup="$HOME/.cc-skills/setup.sh"'
-fi
+# Detect shell đang chạy thực sự (không dùng file tồn tại vì dễ nhầm)
+CURRENT_SHELL="$(basename "${SHELL:-bash}")"
+case "$CURRENT_SHELL" in
+    zsh)
+        add_alias "$HOME/.zshrc"
+        ;;
+    bash)
+        if [ -f "$HOME/.bashrc" ]; then
+            add_alias "$HOME/.bashrc"
+        elif [ -f "$HOME/.bash_profile" ]; then
+            add_alias "$HOME/.bash_profile"
+        else
+            add_alias "$HOME/.bashrc"
+        fi
+        ;;
+    *)
+        echo "⚠️  Shell '$CURRENT_SHELL' chưa được hỗ trợ tự động."
+        echo "   Thêm thủ công vào shell config của bạn:"
+        echo '   alias cc-setup="$HOME/.cc-skills/setup.sh"'
+        ;;
+esac
 
 echo ""
 echo "✅ Bootstrap hoàn tất!"
