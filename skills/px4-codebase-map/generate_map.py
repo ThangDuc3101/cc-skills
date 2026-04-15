@@ -108,7 +108,7 @@ def extract_uorb(source_dir: Path, modules: dict) -> dict:
     for mod_name, mod_info in modules.items():
         mod_path = source_dir / mod_info["path"]
 
-        for cpp_file in list(mod_path.rglob("*.cpp")) + list(mod_path.rglob("*.hpp")):
+        for cpp_file in list(mod_path.rglob("*.cpp")) + list(mod_path.rglob("*.hpp")) + list(mod_path.rglob("*.h")):
             try:
                 content = cpp_file.read_text(errors="ignore")
             except OSError:
