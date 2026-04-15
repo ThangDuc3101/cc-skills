@@ -23,22 +23,37 @@ MODULE_ROOTS = [
     "src/systemcmds",
 ]
 
-# uORB publish patterns
+# uORB publish patterns — cover cả style cũ (orb_advertise) và modern (Publication{ORB_ID})
 PUB_PATTERNS = [
+    # Style cũ: orb_advertise(ORB_ID(topic))
     re.compile(r'orb_advertise(?:_multi)?\s*\(\s*ORB_ID\s*\(\s*(\w+)\s*\)'),
-    re.compile(r'uORB::Publication\s*<\s*(\w+)'),
-    re.compile(r'uORB::PublicationMulti\s*<\s*(\w+)'),
-    re.compile(r'uORB::PublicationQueued\s*<\s*(\w+)'),
+    # Modern style: uORB::Publication<type_s> _pub{ORB_ID(topic)} → ưu tiên lấy ORB_ID
+    re.compile(r'uORB::Publication(?:Multi|Queued)?\s*<[^>]*>\s*\w+\s*\{[^}]*ORB_ID\s*\(\s*(\w+)\s*\)'),
+    # Fallback type-based (strip _s suffix sau khi capture)
+    re.compile(r'uORB::Publication\s*<\s*(\w+?_s)\s*>'),
+    re.compile(r'uORB::PublicationMulti\s*<\s*(\w+?_s)\s*>'),
+    re.compile(r'uORB::PublicationQueued\s*<\s*(\w+?_s)\s*>'),
 ]
 
-# uORB subscribe patterns
+# uORB subscribe patterns — cover cả style cũ và modern constructor {ORB_ID(topic)}
 SUB_PATTERNS = [
+    # Style cũ: orb_subscribe(ORB_ID(topic))
     re.compile(r'orb_subscribe(?:_multi)?\s*\(\s*ORB_ID\s*\(\s*(\w+)\s*\)'),
-    re.compile(r'uORB::Subscription\s*<\s*(\w+)'),
-    re.compile(r'uORB::SubscriptionCallbackWorkItem\s*<\s*(\w+)'),
-    re.compile(r'uORB::SubscriptionInterval\s*<\s*(\w+)'),
-    re.compile(r'uORB::SubscriptionMultiArray\s*<\s*(\w+)'),
+    # Modern style: uORB::Subscription _sub{ORB_ID(topic)} (không có <type>)
+    re.compile(r'uORB::Subscription(?:CallbackWorkItem|Interval|MultiArray)?\s+\w+\s*\{[^}]*ORB_ID\s*\(\s*(\w+)\s*\)'),
+    # Modern style với <type>: uORB::Subscription<type_s> _sub{ORB_ID(topic)}
+    re.compile(r'uORB::Subscription(?:CallbackWorkItem|Interval|MultiArray)?\s*<[^>]*>\s*\w+\s*\{[^}]*ORB_ID\s*\(\s*(\w+)\s*\)'),
+    # Fallback type-based (strip _s suffix sau khi capture)
+    re.compile(r'uORB::Subscription\s*<\s*(\w+?_s)\s*>'),
+    re.compile(r'uORB::SubscriptionCallbackWorkItem\s*<\s*(\w+?_s)\s*>'),
+    re.compile(r'uORB::SubscriptionInterval\s*<\s*(\w+?_s)\s*>'),
+    re.compile(r'uORB::SubscriptionMultiArray\s*<\s*(\w+?_s)\s*>'),
 ]
+
+
+def strip_msg_suffix(name: str) -> str:
+    """Strip _s suffix từ message type để ra topic name: vehicle_local_position_s → vehicle_local_position."""
+    return name[:-2] if name.endswith('_s') else name
 
 # Parameter definition pattern
 PARAM_PATTERN = re.compile(r'PARAM_DEFINE_\w+\s*\(\s*(\w+)\s*,')
@@ -93,7 +108,7 @@ def extract_uorb(source_dir: Path, modules: dict) -> dict:
     for mod_name, mod_info in modules.items():
         mod_path = source_dir / mod_info["path"]
 
-        for cpp_file in mod_path.rglob("*.cpp"):
+        for cpp_file in list(mod_path.rglob("*.cpp")) + list(mod_path.rglob("*.hpp")):
             try:
                 content = cpp_file.read_text(errors="ignore")
             except OSError:
@@ -101,7 +116,7 @@ def extract_uorb(source_dir: Path, modules: dict) -> dict:
 
             for pattern in PUB_PATTERNS:
                 for match in pattern.finditer(content):
-                    topic = match.group(1)
+                    topic = strip_msg_suffix(match.group(1))
                     if topic not in mod_info["publishes"]:
                         mod_info["publishes"].append(topic)
                     if mod_name not in uorb_topics[topic]["publishers"]:
@@ -109,7 +124,7 @@ def extract_uorb(source_dir: Path, modules: dict) -> dict:
 
             for pattern in SUB_PATTERNS:
                 for match in pattern.finditer(content):
-                    topic = match.group(1)
+                    topic = strip_msg_suffix(match.group(1))
                     if topic not in mod_info["subscribes"]:
                         mod_info["subscribes"].append(topic)
                     if mod_name not in uorb_topics[topic]["subscribers"]:
