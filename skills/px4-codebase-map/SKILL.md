@@ -19,8 +19,8 @@ python3 ~/.cc-skills/skills/px4-codebase-map/generate_map.py --source .
 
 ## Bước 2 — Cách tra cứu trên map
 
-Map là file JSON với 3 section chính. Dùng `jq` hoặc `grep` để query — không load
-toàn bộ file vào context.
+Map là file JSON với 3 section chính. **Bắt buộc dùng `jq` để query** — không dùng
+`python3 -c`, không load toàn bộ file vào context.
 
 **Tìm module liên quan đến một topic:**
 ```bash
