@@ -15,14 +15,14 @@ trước khi mở file source. Chỉ đọc source khi map không đủ thông t
 
 ```cpp
 // ✅ Pattern đúng
-class MyModule : public ModuleBase<MyModule> {
-    uORB::Subscription _status_sub{ORB_ID(vehicle_status)};        // ngoài loop
-    uORB::Publication<my_topic_s> _output_pub{ORB_ID(my_topic)};   // ngoài loop
+class MyModule : public ModuleBase<MyModule>, public ModuleParams {
+    uORB::Subscription _vehicle_status_sub{ORB_ID(vehicle_status)};  // ngoài loop
+    uORB::Publication<my_topic_s> _my_pub{ORB_ID(my_topic)};         // ngoài loop
 
-    void run() override {
-        while (!should_exit()) {
-            vehicle_status_s status{};
-            if (_status_sub.update(&status)) { /* xử lý */ }       // bên trong loop
+    void Run() override {
+        vehicle_status_s status{};
+        if (_vehicle_status_sub.update(&status)) {  // trong loop, Run() gọi mỗi cycle
+            // xử lý
         }
     }
 };

@@ -26,7 +26,7 @@ Nếu thiếu, chạy: `cc-setup --skills px4-dev,px4-sitl,px4-codebase-map,px4-
 
 ### 1.1 Query codebase map
 
-Mở `.px4-graph/px4_map.json` và tra cứu:
+QUERY `.px4-graph/px4_map.json` bằng jq để xác định:
 
 ```bash
 # Tìm module liên quan đến feature
@@ -49,8 +49,7 @@ python3 ~/.cc-skills/skills/px4-codebase-map/generate_map.py --source .
 
 ### 1.2 Đọc source các module liên quan
 
-Sau khi xác định module từ map, đọc các file liên quan để hiểu implementation hiện tại.
-Không đề xuất thay đổi khi chưa đọc code.
+ĐỌC source các file liên quan. KHÔNG đề xuất thay đổi khi chưa đọc code.
 
 ### 1.3 Trình bày plan — DỪNG VÀ HỎI NGƯỜI DÙNG
 
@@ -75,7 +74,9 @@ Trình bày plan theo cấu trúc sau, sau đó **dừng lại chờ xác nhận
 **Rủi ro:**
 - [liệt kê nếu có]
 
-Bạn có muốn tiến hành không?
+Plan phân tích hoàn tất. Các module bị ảnh hưởng: [liệt kê].
+uORB topics liên quan: [liệt kê]. Parameters cần thay đổi: [liệt kê].
+Xác nhận để bắt đầu Phase 2 (implementation + test song song)? [yes/no]
 ```
 
 **KHÔNG implement bất cứ thứ gì trước khi người dùng xác nhận.**
@@ -152,12 +153,9 @@ Fail: Y/5
 Sau khi ghi log, thông báo tóm tắt và hỏi:
 
 ```
-Lần [N]: [X/5 pass]. Log ghi tại .px4-graph/sitl-logs/log[N].txt
-
-Nguyên nhân dự kiến: [tóm tắt 1-2 dòng]
-Hướng xử lý đề xuất: [tóm tắt 1-2 dòng]
-
-Bạn có chỉ đạo gì thêm không, hay để tiếp tục sửa và test lại?
+SITL test [số thứ tự] FAILED. Log: .px4-graph/sitl-logs/log[N].txt
+Lỗi: [mô tả ngắn]. Nguyên nhân khả năng: [phân tích].
+Hướng xử lý: [A] Sửa code theo gợi ý / [B] Bỏ qua test này / [C] Dừng workflow
 ```
 
 **Chờ phản hồi của người dùng.** Nếu người dùng có chỉ đạo mới → ưu tiên theo chỉ đạo đó.
@@ -190,8 +188,9 @@ Không ghi thêm log nào sau đây. Chuyển sang Phase 4.
 Sau khi SITL pass, hỏi:
 
 ```
-SITL đã pass. Bạn có muốn thử trên Pixhawk 6X và Jetson Orin Nano thật không?
-Lưu ý: đảm bảo môi trường bay an toàn trước khi thử.
+Tất cả SITL tests đã PASS. Chuẩn bị flash lên Pixhawk 6X thực tế.
+Đây là bước KHÔNG THỂ undo nếu firmware lỗi.
+Xác nhận flash hardware? [yes/no]
 ```
 
 **KHÔNG tiến hành nếu người dùng chưa xác nhận.**
