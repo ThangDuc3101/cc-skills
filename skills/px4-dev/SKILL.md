@@ -19,7 +19,7 @@ class MyModule : public ModuleBase<MyModule>, public ModuleParams {
 
     void Run() override {  // đây là vòng lặp
         vehicle_status_s status{};
-        if (_status_sub.update(&status)) {  // gọi update() BÊN TRONG vòng lặp
+        if (_status_sub.update(&status)) {  // trong loop
             // xử lý
         }
     }
@@ -27,8 +27,6 @@ class MyModule : public ModuleBase<MyModule>, public ModuleParams {
 ```
 
 ❌ SAI: khai báo `uORB::Subscription` bên trong `Run()` — tạo object mới mỗi iteration.
-- Không dùng `orb_check()` trong tight loop — dùng `SubscriptionCallbackWorkItem` hoặc poll
-- Khi thêm topic mới: khai báo trong `msg/` trước, build generate header, sau đó dùng
 
 ## 3. Logging — không dùng printf
 

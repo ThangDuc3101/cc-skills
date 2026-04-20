@@ -1,5 +1,3 @@
-Áp dụng khi user yêu cầu thêm, sửa, hoặc xóa feature trong PX4-Autopilot.
-
 ## Yêu cầu
 
 Skill này chỉ hoạt động đúng khi các skill sau đã được inject vào CLAUDE.md:
