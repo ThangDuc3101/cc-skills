@@ -13,6 +13,21 @@ trước khi mở file source. Chỉ đọc source khi map không đủ thông t
 - Không dùng `orb_check()` trong tight loop — dùng `SubscriptionCallbackWorkItem` hoặc poll
 - Khi thêm topic mới: khai báo trong `msg/` trước, build để generate header, sau đó dùng
 
+```cpp
+// ✅ Pattern đúng
+class MyModule : public ModuleBase<MyModule> {
+    uORB::Subscription _status_sub{ORB_ID(vehicle_status)};        // ngoài loop
+    uORB::Publication<my_topic_s> _output_pub{ORB_ID(my_topic)};   // ngoài loop
+
+    void run() override {
+        while (!should_exit()) {
+            vehicle_status_s status{};
+            if (_status_sub.update(&status)) { /* xử lý */ }       // bên trong loop
+        }
+    }
+};
+```
+
 ## 3. Logging — không dùng printf
 
 | Dùng | Thay cho |

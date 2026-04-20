@@ -101,6 +101,8 @@ Phase 4 — Deploy hardware (hỏi trước)
   Agent jetson-companion → deploy MAVSDK script lên Jetson (sau)
 ```
 
+Xem dependencies đầy đủ giữa các skills tại [skills/README.md](skills/README.md).
+
 ### Setup cho project PX4-Autopilot
 
 ```bash

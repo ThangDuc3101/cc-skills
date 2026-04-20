@@ -2,6 +2,17 @@ Orchestration flow cho mọi tác vụ thêm, sửa, hoặc cắt giảm feature
 PX4-Autopilot. Skill này định nghĩa thứ tự các bước và các checkpoint bắt buộc
 phải hỏi người dùng trước khi tiếp tục.
 
+## Yêu cầu
+
+Skill này chỉ hoạt động đúng khi các skill sau đã được inject vào CLAUDE.md:
+- px4-dev
+- px4-sitl
+- px4-codebase-map
+
+Nếu thiếu, chạy: `cc-setup --skills px4-dev,px4-sitl,px4-codebase-map,px4-workflow`
+
+---
+
 ## Khi nào áp dụng
 
 Áp dụng skill này khi người dùng yêu cầu:

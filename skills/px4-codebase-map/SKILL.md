@@ -61,6 +61,23 @@ jq '.uorb_topics.X | {publishers, subscribers}' .px4-graph/px4_map.json
 ## Nguyên tắc
 
 - Ưu tiên map trước, grep source sau — map nhanh hơn, tiết kiệm context
-- Map có thể outdated nếu source thay đổi nhiều → nhắc người dùng regenerate
+- Nếu phát hiện map stale (xem điều kiện bên dưới) → nhắc người dùng regenerate
 - Không tự regenerate map — chỉ đọc và tra cứu
 - Nếu map thiếu thông tin cần thiết → grep source nhưng ghi chú lại
+
+## Khi nào map stale — nhắc regenerate
+
+Nhắc người dùng regenerate khi gặp bất kỳ điều kiện nào sau:
+
+1. **Module tồn tại trong source nhưng không có trong map** — user vừa thêm module mới
+2. **Query trả về `null` hoặc `{}` cho module đang tồn tại** — map chưa cover module đó
+3. **`.px4-graph/px4_map.json` không tồn tại** — map chưa được generate lần nào
+
+Câu nhắc mẫu khi phát hiện stale:
+
+```
+Map tại `.px4-graph/px4_map.json` có thể chưa cập nhật — module [tên] không có trong map
+nhưng tồn tại trong source. Bạn có muốn regenerate không?
+
+python3 ~/.cc-skills/skills/px4-codebase-map/generate_map.py --source .
+```
