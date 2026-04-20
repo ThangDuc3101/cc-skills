@@ -8,25 +8,27 @@ trước khi mở file source. Chỉ đọc source khi map không đủ thông t
 
 ## 2. uORB — publish/subscribe đúng cách
 
-- Khởi tạo `uORB::Subscription` và `uORB::Publication` **ngoài vòng lặp** (trong constructor hoặc `init()`)
-- Gọi `update()` hoặc `copy()` **bên trong** vòng lặp — không tạo subscription mới mỗi iteration
-- Không dùng `orb_check()` trong tight loop — dùng `SubscriptionCallbackWorkItem` hoặc poll
-- Khi thêm topic mới: khai báo trong `msg/` trước, build để generate header, sau đó dùng
+**uORB Pub/Sub — pattern bắt buộc:**
 
 ```cpp
-// ✅ Pattern đúng
+// ✅ ĐÚNG
 class MyModule : public ModuleBase<MyModule>, public ModuleParams {
-    uORB::Subscription _vehicle_status_sub{ORB_ID(vehicle_status)};  // ngoài loop
-    uORB::Publication<my_topic_s> _my_pub{ORB_ID(my_topic)};         // ngoài loop
+    // Khai báo BÊN NGOÀI vòng lặp — khởi tạo 1 lần
+    uORB::Subscription _status_sub{ORB_ID(vehicle_status)};
+    uORB::Publication<my_msg_s> _my_pub{ORB_ID(my_msg)};
 
-    void Run() override {
+    void Run() override {  // đây là vòng lặp
         vehicle_status_s status{};
-        if (_vehicle_status_sub.update(&status)) {  // trong loop, Run() gọi mỗi cycle
+        if (_status_sub.update(&status)) {  // gọi update() BÊN TRONG vòng lặp
             // xử lý
         }
     }
 };
 ```
+
+❌ SAI: khai báo `uORB::Subscription` bên trong `Run()` — tạo object mới mỗi iteration.
+- Không dùng `orb_check()` trong tight loop — dùng `SubscriptionCallbackWorkItem` hoặc poll
+- Khi thêm topic mới: khai báo trong `msg/` trước, build generate header, sau đó dùng
 
 ## 3. Logging — không dùng printf
 
